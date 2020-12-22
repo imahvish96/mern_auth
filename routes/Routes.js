@@ -1,30 +1,39 @@
 const { Router } = require("express");
-
+const mongoose = require("mongoose")
+const User = require("../model/User");
 const router = Router();
+const joi = require("@hapi/joi");
 
-router.get("/", (req, res) => {
-  res.render("index");
-});
-router.get("/login", (req, res) => {
-  res.render("login");
-});
-router.get("/signup", (req, res) => {
-  res.render("signup");
-});
-router.get("/dashboard", (req, res) => {
-  res.render("dashboard");
-});
 
-//POST ROUTES
-router.post("/login", (req, res) => {
-  res.render("login");
-});
+const schema = {
+  email  : joi.string().min(6).required().email(),
+  password : joi.string().min(6).required(),
+}
 
-router.post("/signup", (req, res) => {
-  let { email, password } = req.body;
-  let userData = { email, password };
-  console.log(userData);
-  res.render("signup");
+
+router.post("/signup", async (req, res) => {
+
+  const validation = joi.valid(req.body, schema);
+  res.send(validation);
+
+
+  /* let { email, password } = req.body;
+  const user = new User({
+    email,
+    password,
+  })
+
+  console.log(user);
+  try {
+    let saveUser = await user.save();
+    res.send(saveUser);
+  } 
+  
+  catch(error) {
+    console.log(error);
+    res.status(400).send(error);
+  } */
+ 
 });
 
 module.exports = router;

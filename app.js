@@ -4,9 +4,11 @@ const mongoose = require("mongoose");
 const routes = require("./routes/Routes");
 const path = require("path");
 const dotenv = require("dotenv");
+const User = require("./model/User")
 
 const app = express();
 app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 
 dotenv.config({ path: "./config.env" });
 
