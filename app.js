@@ -4,9 +4,29 @@ const mongoose = require("mongoose");
 const routes = require("./routes/Routes");
 const path = require("path");
 const dotenv = require("dotenv");
-const User = require("./model/User")
+const User = require("./model/User");
+const session = require("express-session");
+const flash = require("connect-flash");
+const cookieParser = require("cookie-parser");
 
 const app = express();
+
+app.use(cookieParser());
+app.use(
+  session({
+    secret: "thequickbrowfox",
+    resave: false,
+    saveUninitialized: false,
+  })
+);
+
+app.use(flash());
+app.use((req, res, next) => {
+  res.locals.success_msg = req.flash("success_msg");
+  res.locals.error_msg = req.flash("error_msg");
+  next();
+});
+
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
